@@ -14,21 +14,19 @@ export default class form extends Component {
    }
   }
 
-  checkValid = () => {
-    if ((this.state.email.length > 8 && (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email))) &&
-    (this.state.password.length > 8 && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(this.state.password))) {
-    this.setState({
-      isValid: true});
-  } else {
-    this.setState({
-      isValid: false});
-  }
- }
-
   onHandleInput(e) {
     this.setState({
       [e.target.name]: e.target.value
-    },this.checkValid)
+    },() => {
+      if ((this.state.email.length > 8 && (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email))) &&
+      (this.state.password.length > 8 && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(this.state.password))) {
+      this.setState({
+        isValid: true});
+    } else {
+      this.setState({
+        isValid: false});
+    }
+   })
   }
 
   valideteEmail() {
