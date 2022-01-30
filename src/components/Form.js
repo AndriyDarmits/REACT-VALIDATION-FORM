@@ -14,40 +14,42 @@ export default class form extends Component {
    }
   }
 
+  checkValid = () => {
+    if ((this.state.email.length > 8 && (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email))) &&
+    (this.state.password.length > 8 && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(this.state.password))) {
+    this.setState({
+      isValid: true});
+  } else {
+    this.setState({
+      isValid: false});
+  }
+ }
+
   onHandleInput(e) {
     this.setState({
       [e.target.name]: e.target.value
-    }, () => {
-      if ((this.state.email.length > 8 && (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email))) &&
-      (this.state.password.length > 8 && /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(this.state.password))) {
-      this.setState({
-        isValid: true});
-    } else {
-      this.setState({
-        isValid: false});
-    }
-    })
+    },this.checkValid)
   }
 
   valideteEmail() {
     if (this.state.email.length <= 8 && this.state.email.length >= 1) {
-    return <p>too short</p>
+    return <div>too short</div>
     }
     else if (this.state.email === "") {
-      return <p>field is empty</p>
+      return <div>field is empty</div>
     } else if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email)) { 
-      return <p>Invalid email</p>
+      return <div>Invalid email</div>
     }
   }
 
   validetePassword() {
     if (this.state.password.length <= 8 && this.state.password.length >= 1) {
-      return <p>too short</p>
+      return <div>too short</div>
       }
       else if (this.state.password === "") {
-        return <p>field is empty</p>
+        return <div>field is empty</div>
       } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(this.state.password)) { 
-        return <p>at least one uppercase letter, <br/>one lowercase letter,<br/> one number, <br/> one special character</p>
+        return <div>at least one uppercase letter, one lowercase letter, one number, one special character</div>
       }
   }
   
@@ -60,17 +62,12 @@ export default class form extends Component {
         isValid:false
     })
   }
-  
-
-  
-  
-
-
 
   render() {
-    return( 
-    <div className="form__block">
-      <h2 className="form__header">Sign up</h2>
+    return ( 
+      <div className="form__block">
+        <h2 className="form__header">Sign in</h2>
+      <div className="form">
       <form action="/" method="get" >
           <div className="email">
             <input 
@@ -82,7 +79,10 @@ export default class form extends Component {
               value={this.state.email}
               onChange={this.onHandleInput}
             />
-            <div>{this.valideteEmail()}</div>
+            <div className="error__block">
+              {this.valideteEmail()}
+              {this.validetePassword()}
+            </div>
           </div>
           
           <div className="password">
@@ -95,13 +95,12 @@ export default class form extends Component {
             value={this.state.password}
             onInput={this.onHandleInput}
             /> 
-            <div>{this.validetePassword()}</div>
       </div>
-        
         <button className = "submit_btn" onClick = {this.onHandleSubmit} disabled = {this.state.isValid ? "" : true}>Submit</button>
       </form>
-      
   </div>
+      </div>
+   
   )
   }
 }
